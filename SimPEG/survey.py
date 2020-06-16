@@ -262,7 +262,7 @@ class BaseSurvey(properties.HasProperties):
         value = change["value"]
         if len(set(value)) != len(value):
             raise Exception("The source_list must be unique")
-        # self._sourceOrder = dict()
+
         [self._sourceOrder.setdefault(src._uid, ii) for ii, src in enumerate(value)]
 
     # TODO: this should be private
@@ -270,9 +270,14 @@ class BaseSurvey(properties.HasProperties):
         if type(sources) is not list:
             sources = [sources]
 
-        for src in sources:
+        for ii, src in enumerate(sources):
             if getattr(src, "_uid", None) is None:
                 raise KeyError("Source does not have a _uid: {0!s}".format(str(src)))
+
+            # Set default value for _sourceOrder because on dask yarn cluster,
+            # _source_list_validator does not always run on all workers for some reason
+            self._sourceOrder.setdefault(src._uid, ii)
+
         inds = list(map(lambda src: self._sourceOrder.get(src._uid, None), sources))
         if None in inds:
             raise KeyError(

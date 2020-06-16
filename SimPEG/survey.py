@@ -253,6 +253,7 @@ class BaseSurvey(properties.HasProperties):
 
     def __init__(self, source_list=None, **kwargs):
         super(BaseSurvey, self).__init__(**kwargs)
+        self._sourceOrder = dict()
         if source_list is not None:
             self.source_list = source_list
 
@@ -261,7 +262,7 @@ class BaseSurvey(properties.HasProperties):
         value = change["value"]
         if len(set(value)) != len(value):
             raise Exception("The source_list must be unique")
-        self._sourceOrder = dict()
+        # self._sourceOrder = dict()
         [self._sourceOrder.setdefault(src._uid, ii) for ii, src in enumerate(value)]
 
     # TODO: this should be private

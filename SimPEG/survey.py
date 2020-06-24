@@ -205,7 +205,7 @@ class BaseSrc(BaseSimPEG):
     )
 
     def getReceiverIndex(self, receiver):
-        if type(receiver) is not list:
+        if not isinstance(receiver, list):
             receiver = [receiver]
         for rx in receiver:
             if getattr(rx, "_uid", None) is None:
@@ -253,6 +253,11 @@ class BaseSurvey(properties.HasProperties):
 
     def __init__(self, source_list=None, **kwargs):
         super(BaseSurvey, self).__init__(**kwargs)
+        # Moving the setting of self._sourceOrder to __init__. This is because on dask
+        # yarn cluster, _source_list_validator does not always run on all workers. If
+        # this line is not included, the following exception is often thrown when
+        # running inversion on a dask cluster:
+        # AttributeError("'Survey' object has no attribute '_sourceOrder'")
         self._sourceOrder = dict()
         if source_list is not None:
             self.source_list = source_list
@@ -267,15 +272,19 @@ class BaseSurvey(properties.HasProperties):
 
     # TODO: this should be private
     def getSourceIndex(self, sources):
-        if type(sources) is not list:
+        if not isinstance(sources, list):
             sources = [sources]
 
         for ii, src in enumerate(sources):
             if getattr(src, "_uid", None) is None:
                 raise KeyError("Source does not have a _uid: {0!s}".format(str(src)))
 
-            # Set default value for _sourceOrder because on dask yarn cluster,
-            # _source_list_validator does not always run on all workers for some reason
+            # Set default value for _sourceOrder again here, even though it's already
+            # done in _source_list_validator. This is because on dask yarn cluster,
+            # _source_list_validator does not always run on all workers. If this line
+            # is not included, the following exception is often thrown when running
+            # inversion on a dask cluster:
+            # KeyError('Some of the sources specified are not in this survey. [None]')
             self._sourceOrder.setdefault(src._uid, ii)
 
         inds = list(map(lambda src: self._sourceOrder.get(src._uid, None), sources))

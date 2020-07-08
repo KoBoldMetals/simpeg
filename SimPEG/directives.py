@@ -1025,11 +1025,13 @@ class UpdateSensitivityWeights(InversionDirective):
     everyIter = True
     threshold = 1e-12
     switch = True
+    initial_cell_weights = iter(lambda: None, True)
 
     def initialize(self):
 
         # Calculate and update sensitivity
         # for optimization and regularization
+        self.initial_cell_weights = [reg.cell_weights for reg in self.reg.objfcts]
         self.update()
 
     def endIter(self):
@@ -1099,14 +1101,15 @@ class UpdateSensitivityWeights(InversionDirective):
             Update the cell weights with the approximated sensitivity
         """
 
-        for reg in self.reg.objfcts:
+        for reg, initial_weights in zip(self.reg.objfcts, self.initial_cell_weights):
             reg.cell_weights = reg.mapping * (self.wr)
+            if initial_weights is not None:
+                reg.cell_weights *= initial_weights
 
     def validate(self, directiveList):
         # check if a beta estimator is in the list after setting the weights
         dList = directiveList.dList
         self_ind = dList.index(self)
-        beta_estimator_ind = [isinstance(d, BetaEstimate_ByEig) for d in dList]
 
         beta_estimator_ind = [isinstance(d, BetaEstimate_ByEig) for d in dList]
 

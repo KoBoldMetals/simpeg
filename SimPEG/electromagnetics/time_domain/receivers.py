@@ -1,4 +1,5 @@
 import numpy as np
+import properties
 import scipy.sparse as sp
 
 from ...survey import BaseTimeRx
@@ -14,9 +15,9 @@ class BaseRx(BaseTimeRx):
     :param string orientation: receiver orientation 'x', 'y' or 'z' or numpy array
     """
 
-    # orientation = properties.StringChoice(
-    #    "orientation of the receiver. Must currently be 'x', 'y', 'z'", ["x", "y", "z"]
-    # )
+    use_source_receiver_offset = properties.Bool(
+        "Use source-receiver offset", default=False
+    )
 
     def __init__(self, locations, times, orientation=None, **kwargs):
         proj = kwargs.pop("projComp", None)

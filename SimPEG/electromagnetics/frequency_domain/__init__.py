@@ -16,6 +16,8 @@ Simulations
   Simulation3DMagneticFluxDensity
   Simulation3DCurrentDensity
   Simulation3DMagneticField
+  Simulation3DElectricFieldFaceEdgeConductivity
+  Simulation3DMagneticFluxDensityFaceEdgeConductivity
 
 
 Receivers
@@ -60,6 +62,8 @@ Fields
   Fields3DMagneticFluxDensity
   Fields3DCurrentDensity
   Fields3DMagneticField
+  Fields3DElectricFieldFaceEdgeConductivity
+  Fields3DMagneticFluxDensityFaceEdgeConductivity
 
 Base Classes
 ============
@@ -81,13 +85,18 @@ from .simulation import (
     Simulation3DMagneticFluxDensity,
     Simulation3DCurrentDensity,
     Simulation3DMagneticField,
+    Simulation3DElectricFieldFaceEdgeConductivity,
+    Simulation3DMagneticFluxDensityFaceEdgeConductivity,
 )
 from .simulation_1d import Simulation1DLayered
+from .simulation_1d_stitched import Simulation1DLayeredStitched
 from .fields import (
     Fields3DElectricField,
     Fields3DMagneticFluxDensity,
     Fields3DCurrentDensity,
     Fields3DMagneticField,
+    Fields3DElectricFieldFaceEdgeConductivity,
+    Fields3DMagneticFluxDensityFaceEdgeConductivity,
 )
 
 from . import sources as Src

@@ -149,25 +149,26 @@ to constrain inversions.
 from ..utils.code_utils import deprecate_class
 from .base import (
     BaseRegularization,
-    WeightedLeastSquares,
     BaseSimilarityMeasure,
     Smallness,
     SmoothnessFirstOrder,
     SmoothnessSecondOrder,
+    WeightedLeastSquares,
 )
-from .regularization_mesh import RegularizationMesh
-from .sparse import BaseSparse, SparseSmallness, SparseSmoothness, Sparse
-from .pgi import PGIsmallness, PGI
-from .cross_gradient import CrossGradient
 from .correspondence import LinearCorrespondence
+from .cross_gradient import CrossGradient
 from .jtv import JointTotalVariation
+from .pgi import PGI, PGIsmallness
+from .regularization_mesh import RegularizationMesh
+from .regularization_mesh_lateral import LCRegularizationMesh
+from .sparse import BaseSparse, Sparse, SparseSmallness, SparseSmoothness
 from .vector import (
-    BaseVectorRegularization,
-    CrossReferenceRegularization,
-    BaseAmplitude,
-    VectorAmplitude,
     AmplitudeSmallness,
     AmplitudeSmoothnessFirstOrder,
+    BaseAmplitude,
+    BaseVectorRegularization,
+    CrossReferenceRegularization,
+    VectorAmplitude,
 )
 
 

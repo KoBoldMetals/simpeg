@@ -4,7 +4,7 @@ import pytest
 import numpy as np
 
 from discretize import TensorMesh, TreeMesh
-from SimPEG import (
+from simpeg import (
     maps,
     regularization,
 )
@@ -31,7 +31,7 @@ class JTVTensor2D(unittest.TestCase):
         jtv = regularization.JointTotalVariation(
             mesh,
             wire_map=wires,
-            indActive=actv,
+            active_cells=actv,
         )
 
         self.mesh = mesh
@@ -81,7 +81,7 @@ class JTVTensor3D(unittest.TestCase):
         jtv = regularization.JointTotalVariation(
             mesh,
             wire_map=wires,
-            indActive=actv,
+            active_cells=actv,
         )
 
         self.mesh = mesh
@@ -127,7 +127,9 @@ class JTVTree2D(unittest.TestCase):
         # maps
         wires = maps.Wires(("m1", mesh.nC), ("m2", mesh.nC))
 
-        jtv = regularization.JointTotalVariation(mesh, wire_map=wires, indActive=actv)
+        jtv = regularization.JointTotalVariation(
+            mesh, wire_map=wires, active_cells=actv
+        )
 
         self.mesh = mesh
         self.jtv = jtv
@@ -174,7 +176,9 @@ class JTVTree3D(unittest.TestCase):
         # maps
         wires = maps.Wires(("m1", mesh.nC), ("m2", mesh.nC))
 
-        jtv = regularization.JointTotalVariation(mesh, wire_map=wires, indActive=actv)
+        jtv = regularization.JointTotalVariation(
+            mesh, wire_map=wires, active_cells=actv
+        )
 
         self.mesh = mesh
         self.jtv = jtv
@@ -221,7 +225,7 @@ def test_bad_wires():
         regularization.JointTotalVariation(
             mesh,
             wire_map=wires,
-            indActive=actv,
+            active_cells=actv,
         )
 
 
